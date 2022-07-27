@@ -33,14 +33,14 @@ app.all("*", function (req, res, next) {
 
 //登录
 app.get("/login", function (req, res) {
-  // http://127.0.0.1:3001/login?uname=&pwd=
+  // http://127.0.0.1:3001/login?username=&password=
   // 1.获取表单提交的数据
-  let uname = req.query.uname;
-  let pwd = req.query.pwd;
-  // let sql = "select * from liujiaming where uname =? and pwd=?";
+  let username = req.query.username;
+  let password = req.query.password;
+  // let sql = "select * from liujiaming where username =? and password=?";
   //查询
   let sql = "select * from user where username =?";
-  let params = [uname];
+  let params = [username];
   connt.query(sql, params, function (err, rs) {
     if (err) {
       //查询失败
@@ -49,41 +49,58 @@ app.get("/login", function (req, res) {
     console.log(rs); //打印查询成功
     if (rs.length < 1) {
       //查询成功出来的长度小于1就说明数据库里还没有
-      res.send("1"); //然后返回一个1给前端
+      //  res.send("1"); //然后返回一个1给前端
       var sql = "insert into user(id,username,password) values(null,?,?)"; //select * from user where username='15155' and password='151515'
-      var params = [uname, pwd];
+      var params = [username, password];
       connt.query(sql, params, function (err, rs) {
         if (err) {
           //添加失败
           console.log(err);
         }
-        res.send({code: 200,msg:'注册成功'});//登录失败
+        res.send({ code: 200, msg: "注册成功" }); //登录失败
         console.log(rs); //打印添加成功
       });
     } else {
       //查询成功出来的长度大于1就说明数据库里面已经有此用户
-      res.send({code: 200,msg:'注册失败'});//登录失败
+      res.send({ code: 200, msg: "注册失败,用户已存在" }); //登录失败
       // res.send("0"); //然后返回一个0给前端
     }
   });
 });
 
-app.post("/logins", function (req, res) {
+app.post("/register", function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var sql = "select * from user where username='"+username+"' and password='"+password+"'";
+  var sql =
+    "select * from user where username='" +
+    username +
+    "' and password='" +
+    password +
+    "'";
   connt.query(sql, function (err, rs) {
     if (err) {
       //添加失败
       console.log(err);
     }
-    if (rs.length < 1){
-      res.send({code: 200,msg:'登录失败'});//登录失败
-    }else{
-      
-      res.send({code: 200,msg:'登录成功'}); //登录成功
+    if (rs.length < 1) {
+      //查询
+      let sql = "select * from user where username =?";
+      let params = [username];
+      connt.query(sql, params, function (err, rs) {
+        if (err) {
+          //查询失败
+          console.log(err);
+        }
+        if (rs.length < 1) {
+          res.send({ code: 200, msg: "登录失败,账号未注册",content:'1' }); //登录失败
+        } else {
+          res.send({ code: 200, msg: "登录失败,登录失败密码错误",content:'2' }); //登录失败
+        }
+      });
+    } else {
+      res.send({ code: 200, msg: "登录成功" }); //登录成功
     }
-   // console.log(rs); //打印添加成功
+    // console.log(rs); //打印添加成功
   });
 });
 
