@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册界面</title>
+</head>
+<body>
+    <form action="">
+        <!-- pattern 正则判断         required 允许输入框提交进行正则判断-->
+        用户名：<input type="text" name="user" required id="user" pattern="^1[3578]\d{9}$"><br>
+        密 码：<input type="text" name="psw" required id="psw" pattern="^.{6,}$"><br>
+        确认密码：<input type="text" name="cpsw" id="cpsw"><br>
+        <button id="b1">提交</button>
+    </form>
+    <script src="./jquery.js"></script>
+    <script>
+        $("#b1").on("click",function(e){
+            e.preventDefault()
+            if (psw.value!=cpsw.value) {
+                alert("两次密码不一致，傻逼")
+                return
+            }
+            $.post({
+                url:"http://127.0.0.1:3000/zhuce",
+                data:{
+                    v1:user.value,
+                    v2:psw.value,
+                },
+                success:res=>{
+                    if (res.shibai) {
+                        alert(`${res.shibai}`)
+                    }
+                    if (res.chenggong) {
+                        location.href = `${res.chenggong}`
+                    }
+                }
+ 
+            })
+ 
+ 
+ 
+        })
+    </script>
+ 
+</body>
+</html>
