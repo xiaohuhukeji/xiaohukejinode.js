@@ -185,7 +185,10 @@ function reqpost(options, name) {
     request.post(options, (error, response, body) => {
       if (wzrtState) {
         if (name == "wx") {
-          let data = JSON.parse(body).data;
+          let data = [];
+          if (body) {
+            data = JSON.parse(body).data;
+          }
           let wx = {
             name: "wx",
             data: data,
@@ -194,7 +197,10 @@ function reqpost(options, name) {
           resolve(wx);
         }
         if (name == "ios_wx") {
-          let data = JSON.parse(body).data;
+          let data = [];
+          if (body) {
+            data = JSON.parse(body).data;
+          }
           let ios_wx = {
             name: "ios_wx",
             data: data,
@@ -203,7 +209,10 @@ function reqpost(options, name) {
           resolve(ios_wx);
         }
         if (name == "qq") {
-          let data = JSON.parse(body).data;
+           let data = [];
+          if (body) {
+            data = JSON.parse(body).data;
+          }
           let qq = {
             name: "qq",
             data: data,
@@ -212,7 +221,10 @@ function reqpost(options, name) {
           resolve(qq);
         }
         if (name == "ios_qq") {
-          let data = JSON.parse(body).data;
+           let data = [];
+          if (body) {
+            data = JSON.parse(body).data;
+          }
           let ios_qq = {
             name: "ios_qq",
             data: data,
