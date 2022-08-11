@@ -65,6 +65,7 @@ async function disposeWZRY(query, res) {
 function reqpost(options, name) {
   return new Promise((resolve, reject) => {
     request.post(options, (error, response, body) => {
+      console.log(error);
       let data = [];
       if (body) {
         data = JSON.parse(body).data;
